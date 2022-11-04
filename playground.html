@@ -1,0 +1,73 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Simple HTML</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script src="scripts/Tone.js"></script>
+    <script>
+			function playAttackAndRelease() {
+				// create a synth
+				const synth = new Tone.Synth().toDestination();
+				const now = Tone.now();
+				// play a note from that synth
+				synth.triggerAttackRelease("C4", 0.5, now)
+				synth.triggerAttackRelease("E4", 0.5, now+1)
+				synth.triggerAttackRelease("G4", 0.5, now+2)
+				synth.triggerAttackRelease("C5", 0.5, now+3)
+				synth.triggerAttackRelease("C4", 0.5, now+4)
+				synth.triggerAttackRelease("E4", 0.5, now+5)
+				synth.triggerAttackRelease("C5", 0.5, now+6)
+				synth.triggerAttackRelease("G4", 0.5, now+7)
+				synth.triggerAttackRelease("C4", 0.5, now+8)
+			}
+
+			function playTransportLoops() {
+				// create synths
+				const synthA = new Tone.FMSynth().toDestination();
+				const synthB = new Tone.AMSynth().toDestination();
+
+                // plays a C4 every 4 seconds for 0.5 seconds, started at 0
+				const loopA = new Tone.Loop(time => {
+				    synthA.triggerAttackRelease("C4", 0.5, time);
+				}, 4).start(0);
+
+				const loopB = new Tone.Loop(time => {
+				    synthB.triggerAttackRelease("E4", 0.2, time);
+				}, 1).start(0);
+
+				Tone.Transport.start().stop("+15");
+			}
+
+			function playInstruments() {
+			    const synth = new Tone.PolySynth(Tone.Synth).toDestination();
+                const now = Tone.now()
+                synth.triggerAttack("D4", now);
+                synth.triggerAttack("F4", now + 0.5);
+                synth.triggerAttack("A4", now + 1);
+                synth.triggerAttack("C5", now + 1.5);
+                synth.triggerAttack("E5", now + 2);
+                //synth.triggerRelease(["D4", "F4", "A4", "C5", "E5"], now + 4);
+                synth.triggerRelease(["C5", "E5"], now + 4);
+                synth.triggerRelease(["D4", "F4", "A4"], now + 6);
+			}
+
+			function playOscillator() {
+			    const osc = new Tone.Oscillator().toDestination();
+			    osc.frequency.value = "C4";
+			    osc.frequency.rampTo("C2", 2);
+			    osc.start().stop("+3");
+			}
+		</script>
+</head>
+<body>
+<h1>Attack and release</h1>
+<button onclick="playAttackAndRelease()">Click me to play note!</button>
+<h1>Transport loops</h1>
+<button onclick="playTransportLoops()">Click me to play note!</button>
+<h1>Instruments</h1>
+<button onclick="playInstruments()">Click me to play note!</button>
+<h1>Oscillator</h1>
+<button onclick="playOscillator()">Click me to play note!</button>
+</body>
+</html>
